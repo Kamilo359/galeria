@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity {
         switchTlo = findViewById(R.id.switch1);
         mainLayout = findViewById(R.id.main);
 
-        //pokazObraz(aktualnyIndeks);
+        pokazObraz(aktualnyIndeks);
 
         buttonNext.setOnClickListener(v -> {
             aktualnyIndeks++;
             if (aktualnyIndeks >= koty.length) {
                 aktualnyIndeks = 0;
             }
-            //pokazObraz(aktualnyIndeks);
+            pokazObraz(aktualnyIndeks);
         });
 
         buttonPrev.setOnClickListener(v -> {
@@ -55,7 +55,36 @@ public class MainActivity extends AppCompatActivity {
             if (aktualnyIndeks < 0) {
                 aktualnyIndeks = koty.length - 1;
             }
-            //pokazObraz(aktualnyIndeks);
+            pokazObraz(aktualnyIndeks);
         });
+
+        editTextNumber.setOnEditorActionListener((v, actionId, event) -> {
+            String tekst = editTextNumber.getText().toString();
+            if (!tekst.isEmpty()) {
+                try {
+                    int numer = Integer.parseInt(tekst);
+                    if (numer >= 1 && numer <= koty.length) {
+                        aktualnyIndeks = numer - 1;
+                        pokazObraz(aktualnyIndeks);
+                    } else {
+                        Toast.makeText(this, "Podaj liczbę od 1 do " + koty.length, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Nieprawidłowy numer!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            return true;
+        });
+
+        switchTlo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mainLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.blue_1565c0));
+            } else {
+                mainLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_00796B));
+            }
+        });
+    }
+    private void pokazObraz(int indeks) {
+        imageView.setImageResource(koty[indeks]);
     }
 }
